@@ -15,8 +15,8 @@ app.get("/current", (req, res) => {
     res.send(getAllStates())
 })
 app.post("/add", async (req, res) => {
-    const { target_nickname, target_username, target_url } = req.body
-    if (!target_nickname || !target_username || !target_url) return res.status(400).send({
+    const { target_nickname, target_username, target_url, bot_token, chat_id } = req.body
+    if (!target_nickname || !target_username || !target_url || !bot_token || !chat_id) return res.status(400).send({
         message: "Target Information missing"
     })
 
@@ -33,7 +33,9 @@ app.post("/add", async (req, res) => {
         target_url,
         target_server_name: await getServerName(target_server_id),
         target_channel_name: await getChannelName(target_channel_id),
-        active: false
+        active: false,
+        bot_token,
+        chat_id
     }
 
     const states = getAllStates()

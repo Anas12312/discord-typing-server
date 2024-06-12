@@ -7,14 +7,14 @@ let ws;
 const initialUrl = "wss://gateway-us-east1-b.discord.gg"
 let url = initialUrl, sessionId = "";
 let interval = 0, seq = -1;
-function send(message) {
-    fetch(`https://api.telegram.org/bot${config.telegram_bot_id}/sendMessage`, {
+function send(message, bot_token, chat_id) {
+    fetch(`https://api.telegram.org/bot${bot_token}/sendMessage`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "chat_id": config.telegram_chat_id,
+            "chat_id": chat_id,
             "text": message
         })
     });
@@ -104,12 +104,14 @@ const initWS = () => {
                 let content = d.content
                 let channel_id = d.channel_id
                 let server_id = d.guild_id
+                let bot_token = d.bot_token
+                let chat_id = d.chat_id
                 console.log(server_id + " : " + channel_id + " : " + author)
                 console.log(getActiveUsernames())
                 if(getActiveServers().includes(server_id) && getActiveChannels().includes(channel_id) && getActiveUsernames().includes(author)) {
                     const message = author + ` has sent the following message:\n${content}\n in server: ${await getServerName(server_id)}, channel: ${await getChannelName(channel_id)}`
                     console.log("anaaaaa")
-                    send(message)
+                    send(message, bot_token, channel_id);
                 }
                 break;
         }

@@ -22,8 +22,8 @@ async function run(data) {
             page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 300000000 }),
         ]);
         const outside_data = {
-            tg_bot: config.telegram_bot_id,
-            tg_chat: config.telegram_chat_id,
+            tg_bot: data.bot_token,
+            tg_chat: data.chat_id,
             target_nickname: data.target_nickname,
             server_id: data.target_server_id,
             channel_id: data.target_channel_id,
