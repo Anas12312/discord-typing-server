@@ -9,8 +9,8 @@ async function run(data) {
         await page.setBypassCSP(true)
         await page.setViewport({ width: 1200, height: 720 });
         await page.goto(`https://discord.com/channels/${data.target_server_id}/${data.target_channel_id}`, { waitUntil: 'networkidle0' }); // wait until page load
-        await page.click(".marginTop8__7da6c")
-        page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000000 })
+        // await page.click(".marginTop8__7da6c")
+        // page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000000 })
         await page.waitForSelector('#uid_7')
         await page.type('#uid_7', config.email);
         await page.type('#uid_9', config.password);
@@ -39,7 +39,16 @@ async function run(data) {
                     if (last !== data && data === outside_data.target_nickname) {
                         const message = data + " is typing in: " + outside_data.server_name + ": " + outside_data.channel_name
                         last = data
-                        fetch(`https://api.telegram.org/bot${outside_data.tg_bot}/sendMessage?chat_id=${outside_data.tg_chat}&text=` + message);
+                        fetch(`https://api.telegram.org/bot${outside_data.tg_bot}/sendMessage`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                "chat_id": outside_data.tg_chat,
+                                "text": message
+                            })
+                        });
                     }
                 } else {
                     last = undefined

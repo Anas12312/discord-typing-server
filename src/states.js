@@ -10,6 +10,11 @@ function refresh() {
     console.log("active servers:" + activeServers)
     console.log("active channels:" + activeChannels)
     console.log("active users:" + activeUsernames)
+
+    
+    for(let s in states) {
+        states[s].id = s
+    }
 }
 function pushNewState(data) {
     data.id = states.length
@@ -43,6 +48,7 @@ function deleteState(id) {
 
     deactivate(id)
     states.splice(id, 1)
+    refresh()
     return true
 }
 const getAllStates = () => states

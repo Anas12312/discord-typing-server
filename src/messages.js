@@ -8,7 +8,16 @@ const initialUrl = "wss://gateway-us-east1-b.discord.gg"
 let url = initialUrl, sessionId = "";
 let interval = 0, seq = -1;
 function send(message) {
-    fetch(`https://api.telegram.org/bot${config.telegram_bot_id}/sendMessage?chat_id=${config.telegram_chat_id}&text=` + message);
+    fetch(`https://api.telegram.org/bot${config.telegram_bot_id}/sendMessage`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "chat_id": config.telegram_chat_id,
+            "text": message
+        })
+    });
 }
 let payload = {
     op: 2,
