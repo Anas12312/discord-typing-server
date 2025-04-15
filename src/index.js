@@ -1,7 +1,7 @@
 
 const express = require('express')
 const { checkIfExists, getIdsFromUrl, getServerName, getChannelName } = require('./utils')
-const { getAllStates, pushNewState, activate, setStateBrowser, deactivate, deleteState } = require('./states')
+const { getAllStates, pushNewState, activate, setStateBrowser, deactivate, deleteState, loadData } = require('./states')
 const initWS = require('./messages')
 const run = require('./typing')
 const app = express()
@@ -90,7 +90,8 @@ app.delete('/rm/:id', (req, res) => {
         message: "Deleted"
     })
 })
-app.listen(3000, () => {
+app.listen(3000, async () => {
     initWS()
+    await loadData()
     console.log("Server is up and running on port: 3000")
 })

@@ -1,0 +1,1 @@
+[{"target_nickname":"Anazz","target_username":"anazz","target_server_id":"916044454706704384","target_channel_id":"997565213203243099","target_url":"https://discord.com/channels/916044454706704384/997565213203243099","target_server_name":"A Z","target_channel_name":"az","active":true,"bot_token":"7429875107:AAGmKaMp6idj8BQk-lAFqBSp2sS0Y0-HY2I","chat_id":"-4755602734","id":"0"}]

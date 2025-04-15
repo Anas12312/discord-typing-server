@@ -1,6 +1,6 @@
 const { WebSocket } = require("ws");
 const config = require('../config');
-const { getActiveServers, getActiveChannels, getActiveUsernames } = require("./states");
+const { getActiveServers, getActiveChannels, getActiveUsernames, getState } = require("./states");
 const { getServerName, getChannelName } = require("./utils");
 const token = config.token
 let ws;
@@ -8,6 +8,7 @@ const initialUrl = "wss://gateway-us-east1-b.discord.gg"
 let url = initialUrl, sessionId = "";
 let interval = 0, seq = -1;
 function send(message, bot_token, chat_id) {
+    console.log(bot_token, chat_id)
     fetch(`https://api.telegram.org/bot${bot_token}/sendMessage`, {
         method: "POST",
         headers: {
@@ -104,14 +105,17 @@ const initWS = () => {
                 let content = d.content
                 let channel_id = d.channel_id
                 let server_id = d.guild_id
-                let bot_token = d.bot_token
-                let chat_id = d.chat_id
                 console.log(server_id + " : " + channel_id + " : " + author)
                 console.log(getActiveUsernames())
+                console.log(getActiveServers(), getActiveChannels(), getActiveUsernames(), server_id, channel_id, author)
                 if(getActiveServers().includes(server_id) && getActiveChannels().includes(channel_id) && getActiveUsernames().includes(author)) {
-                    const message = author + ` has sent the following message:\n${content}\n in server: ${await getServerName(server_id)}, channel: ${await getChannelName(channel_id)}`
                     console.log("anaaaaa")
-                    send(message, bot_token, channel_id);
+                    const data = getState(server_id, channel_id, author)
+                    console.log(data)
+                    if(data) {
+                        const message = author + ` has sent the following message:\n${content}\n in server: ${await getServerName(server_id)}, channel: ${await getChannelName(channel_id)}`  + "\n click: " + `https://discord.com/channels/${data.server_id}/${data.channel_id}`
+                        send(message, data.bot_token, data.chat_id);
+                    }
                 }
                 break;
         }
